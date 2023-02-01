@@ -87,3 +87,65 @@ def randomize_limited_and_rotational_joints(physics, random=None):
         quat /= np.linalg.norm(quat)
         qpos[joint_name][3:] = quat
 
+def randomize_cueball_position(physics, random=None, x_range=None,
+                             y_range=None):
+  random = random or np.random
+
+  hinge = mjbindings.enums.mjtJoint.mjJNT_HINGE
+  slide = mjbindings.enums.mjtJoint.mjJNT_SLIDE
+
+  qpos = physics.named.data.qpos
+
+  for joint_id in range(physics.model.njnt):
+    joint_name = physics.model.id2name(joint_id, 'joint')
+    joint_type = physics.model.jnt_type[joint_id]
+    is_limited = physics.model.jnt_limited[joint_id]
+    range_min, range_max = physics.model.jnt_range[joint_id]
+
+    if is_limited:
+      if joint_type == hinge or joint_type == slide:
+        if joint_name == 'root_x':
+          if x_range is not None:
+            range_min, range_max = x_range
+          qpos[joint_name] = random.uniform(range_min, range_max)
+        if joint_name == 'root_y':
+          if y_range is not None:
+            range_min, range_max = y_range
+          qpos[joint_name] = random.uniform(range_min, range_max)
+
+
+def randomize_target_position(physics, random=None, x_range=(-1, 1),
+                             y_range=(-1, 1)):
+  random = random or np.random
+
+  x = random.uniform(x_range[0], x_range[1])
+  y = random.uniform(y_range[0], y_range[1])
+  mocap_pos = physics.named.data.mocap_pos
+  mocap_pos['target'] = [x, y, 0.035]
+
+
+def randomize_ball_position(physics, random=None, id=0, x_range=None,
+                             y_range=None):
+  random = random or np.random
+
+  hinge = mjbindings.enums.mjtJoint.mjJNT_HINGE
+  slide = mjbindings.enums.mjtJoint.mjJNT_SLIDE
+
+  qpos = physics.named.data.qpos
+
+  for joint_id in range(physics.model.njnt):
+    joint_name = physics.model.id2name(joint_id, 'joint')
+    joint_type = physics.model.jnt_type[joint_id]
+    is_limited = physics.model.jnt_limited[joint_id]
+    range_min, range_max = physics.model.jnt_range[joint_id]
+
+    if is_limited:
+      if joint_type == hinge or joint_type == slide:
+        if joint_name == f'ball_{id}_root_x':
+          if x_range is not None:
+            range_min, range_max = x_range
+          qpos[joint_name] = random.uniform(range_min, range_max)
+        if joint_name == f'ball_{id}_root_y':
+          if y_range is not None:
+            range_min, range_max = y_range
+          qpos[joint_name] = random.uniform(range_min, range_max)

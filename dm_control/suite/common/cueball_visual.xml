@@ -1,0 +1,7 @@
+<mujoco>
+  <visual>
+    <headlight ambient=".2 .2 .2" diffuse=".2 .2 .2" specular="0.001 0.001 0.001"/>
+    <map znear=".01"/>
+    <quality shadowsize="2048"/>
+  </visual>
+</mujoco>

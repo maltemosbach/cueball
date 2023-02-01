@@ -1,0 +1,32 @@
+<mojoco>
+    <include file="./common/cueball_visual.xml"/>
+    <include file="./common/materials.xml"/>
+
+    <option timestep="0.05"/>
+
+    <visual>
+        <global offwidth="2048" offheight="2048"/>
+    </visual>
+
+
+    <default>
+        <joint type="hinge" limited="true" range="-1 1" damping="0.1"/>
+        <motor gear="0.075" ctrlrange="-1 1" ctrllimited="true"/>
+    </default>
+
+    <tendon>
+    <fixed name="t1">
+      <joint joint="root_x" coef="1"/>
+      <joint joint="root_y" coef="0"/>
+    </fixed>
+    <fixed name="t2">
+      <joint joint="root_x" coef="0"/>
+      <joint joint="root_y" coef="1"/>
+    </fixed>
+  </tendon>
+
+  <actuator>
+    <motor name="t1" tendon="t1"/>
+    <motor name="t2" tendon="t2"/>
+  </actuator>
+</mojoco>

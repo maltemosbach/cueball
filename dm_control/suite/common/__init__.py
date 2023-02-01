@@ -23,6 +23,9 @@ _FILENAMES = [
     "./common/materials.xml",
     "./common/skybox.xml",
     "./common/visual.xml",
+    "./common/cueball_shared.xml",
+    "./common/cueball_table.xml",
+    "./common/cueball_visual.xml"
 ]
 
 ASSETS = {filename: resources.GetResource(os.path.join(_SUITE_DIR, filename))
