@@ -1,6 +1,4 @@
 import argparse
-
-import dm_control.rl.control
 from dm_control import suite
 import numpy as np
 from dm_control.suite.wrappers import pixels
@@ -8,22 +6,51 @@ from tqdm import tqdm
 from typing import *
 
 
-DATASET_KEYS = ['is_first', 'image', 'reward', 'is_last']
+DATASET_KEYS = ['is_first', 'image', 'action', 'reward', 'is_last']
+POLICY_TYPES = ['random', 'constant']
 VIEWPOINT_MAPPING = {'birdseye': 0, 'firstperson': 1}
 
-def append_to_episode(episode: Dict[str, List], time_step) -> None:
+
+class Policy:
+    def __init__(self, action_spec, policy_type: str = 'random'):
+        self.policy_type = policy_type
+        self.action_spec = action_spec
+
+    def get_action(self, time_step) -> np.array:
+        if self.policy_type == 'random':
+            action = self.sample_random_action()
+        elif self.policy_type == 'constant':
+            if time_step.first():
+                self.const_action = self.sample_random_action()
+            action = self.const_action
+        else:
+            assert False
+        return action
+
+    def sample_random_action(self) -> np.array:
+        return np.random.uniform(
+            self.action_spec.minimum, self.action_spec.maximum,
+            size=self.action_spec.shape)
+
+
+def append_to_episode(episode: Dict[str, List], time_step, action=None) -> \
+        None:
     episode['is_first'].append(time_step.first())
     episode['image'].append(time_step.observation['pixels'])
+    if action is not None:
+        episode['action'].append(action)
     episode['reward'].append(time_step.reward)
     episode['is_last'].append(time_step.last())
+
 
 def create_dataset():
     parser = argparse.ArgumentParser()
     parser.add_argument('--domain', type=str, default='cueball')
     parser.add_argument('--task', type=str, default='sink_single')
     parser.add_argument('--num_episodes', type=int, default=10)
-    parser.add_argument('--file', type=str,
-                        default='cueball_random_dataset.npz')
+    parser.add_argument('--policy', type=str, default='random')
+    parser.add_argument('--npz_file', type=str,
+                        default='cueball_dataset.npz')
     parser.add_argument('--width', type=int, default=128)
     parser.add_argument('--height', type=int, default=72)
     parser.add_argument('--viewpoint', type=str, default='birdseye')
@@ -44,42 +71,36 @@ def create_dataset():
         env, pixels_only=True, render_kwargs=dict(
             height=args.height, width=args.width, camera_id=VIEWPOINT_MAPPING[
                 args.viewpoint]))
-    action_spec = env.action_spec()
     time_step = env.reset()
-    append_to_episode(episode, time_step)
 
-    for episode_count in tqdm(range(args.num_episodes)):
+    # Initialize policy.
+    policy = Policy(env.action_spec(), policy_type=args.policy)
+
+    for episode_count in tqdm(range(args.num_episodes),
+                              desc="Creating Cueball-dataset"):
         while True:
-            # Sample random action and step the environment.
-            action = np.random.uniform(action_spec.minimum,
-                                       action_spec.maximum,
-                                       size=action_spec.shape)
+            # Query action for the current time-step.
+            action = policy.get_action(time_step)
+            # Append current time-step (including the action taken) to the
+            # episode.
+            append_to_episode(episode, time_step, action)
+
+            # Step environment to get the next action.
             time_step = env.step(action)
-            append_to_episode(episode, time_step)
 
             if time_step.last():
+                append_to_episode(episode, time_step)
                 for k in DATASET_KEYS:
                     dataset[k].append(np.array(episode[k]))
                 time_step = env.reset()
                 episode = {k: [] for k in DATASET_KEYS}
-                append_to_episode(episode, time_step)
                 episode_count += 1
                 break
 
     for k in DATASET_KEYS:
         dataset[k] = np.stack(dataset[k])
 
-    np.savez_compressed(args.file, **dataset)
-
-    dataset_reloaded = np.load(args.file)
-
-    for k in dataset_reloaded.keys():
-        print(f"dataset_reloaded[{k}].shape:", dataset_reloaded[k].shape)
-
-        import matplotlib.pyplot as plt
-        for i in range(dataset['image'].shape[1]):
-            plt.imshow(dataset['image'][0, i])
-            plt.show()
+    np.savez_compressed(args.npz_file, **dataset)
 
 
 if __name__ == '__main__':
