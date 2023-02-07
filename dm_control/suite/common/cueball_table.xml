@@ -1,137 +1,17 @@
 
 <mujoco model="cueball-table">
-    <light name="light" pos="0 0 4"/>
-    <camera name="birdseye" pos="0 0 0.9" quat="1 0 0 0"/>
+    <include file="./common/cueball_cueball.xml"/>
     <geom name="ground" type="plane" pos="0 0 0" size="0.64 0.355 .1" material="table_surface"/>
-
-    <body name="cueball" pos="0 0 .035">
-      <camera name="firstperson" pos="0 -0.4 0.4" xyaxes="1 0 0 0 0.7 0.7"/>
-      <joint name="root_x" type="slide"  pos="0 0 0" axis="1 0 0"/>
-      <joint name="root_y" type="slide"  pos="0 0 0" axis="0 1 0"/>
-      <geom name="cueball" type="sphere" size=".0305" mass=".1" material="cueball" solref="-500 -10"/>
+    <body name="wall_left" pos="-0.63 0.0 0.02">
+      <geom name="wall_left" type="box" size="0.01 0.355 0.02" material="table_surface"/>
     </body>
-
-    <body name="pocket_0" pos="-0.57 0.285 0.0">
-      <geom name="pocket_0" type="cylinder" size="0.04 0.001" material="table_pocket"/>
+    <body name="wall_right" pos="0.63 0.0 0.02">
+      <geom name="wall_right" type="box" size="0.01 0.355 0.02" material="table_surface"/>
     </body>
-    <body name="pocket_1" pos="0.0 0.285 0.0">
-      <geom name="pocket_1" type="cylinder" size="0.04 0.001" material="table_pocket"/>
+    <body name="wall_top" pos="0.0 0.345 0.02">
+      <geom name="wall_top" type="box" size="0.62 0.01 0.02" material="table_surface"/>
     </body>
-    <body name="pocket_2" pos="0.57 0.285 0.0">
-      <geom name="pocket_2" type="cylinder" size="0.04 0.001" material="table_pocket"/>
-    </body>
-    <body name="pocket_3" pos="0.57 -0.285 0.0">
-      <geom name="pocket_3" type="cylinder" size="0.04 0.001" material="table_pocket"/>
-    </body>
-    <body name="pocket_4" pos="0.0 -0.285 0.0">
-      <geom name="pocket_4" type="cylinder" size="0.04 0.001" material="table_pocket"/>
-    </body>
-    <body name="pocket_5" pos="-0.57 -0.285 0.0">
-      <geom name="pocket_5" type="cylinder" size="0.04 0.001" material="table_pocket"/>
-    </body>
-
-
-    <body name="border_left" pos="-0.56 0.0 0.03">
-      <geom name="border_left_center" type="box" size="0.015 0.21 0.03" material="table_border" pos="-0.005 0 0"/>
-      <geom name="border_left_top_edge" type="box" size="0.021213 0.021213 0.0299" material="table_border" pos="-0.02 0.21 0" quat="0.924 0 0 0.383"/>
-      <geom name="border_left_bottom_edge" type="box" size="0.021213 0.021213 0.0299" material="table_border" pos="-0.02 -0.21 0" quat="0.924 0 0 0.383"/>
-    </body>
-    <body name="wall_left" pos="-0.59 0.0 0.03">
-      <geom name="wall_left_center_inside" type="box" size="0.01 0.24 0.03" material="table_wall"/>
-      <geom name="wall_left_top_edge" type="box" size="0.01414 0.01414 0.0299" material="table_wall" pos="-0.01 0.24 0" quat="0.924 0 0 0.383"/>
-      <geom name="wall_left_bottom_edge" type="box" size="0.01414 0.01414 0.0299" material="table_wall" pos="-0.01 -0.24 0" quat="0.924 0 0 0.383"/>
-      <geom name="wall_left_center_outside" type="box" size="0.02 0.26 0.03" material="table_wall" pos="-0.03 0 0"/>
-    </body>
-
-    <body name="corner_top_left" pos="-0.62 0.31 0.03">
-      <geom name="corner_top_left_left" type="box" size="0.02 0.0475 0.03" material="table_corner" pos="0 -0.002375 0"/>
-      <geom name="corner_top_left_top" type="box" size="0.0275 0.02 0.03" material="table_corner" pos="0.0475 0.025 0"/>
-      <geom name="corner_top_left_edge" type="box" size="0.02 0.02 0.0299" material="table_corner" pos="0.02 0.005 0" quat="0.924 0 0 0.383"/>
-    </body>
-
-    <body name="border_top_left" pos="-0.285 0.275 0.03" quat="0.7071 0 0 -0.7071">
-      <geom name="border_top_left_center" type="box" size="0.015 0.21 0.03" material="table_border" pos="-0.005 0 0"/>
-      <geom name="border_top_left_top_edge" type="box" size="0.021213 0.021213 0.0299" material="table_border" pos="-0.02 0.21 0" quat="0.924 0 0 0.383"/>
-      <geom name="border_top_left_bottom_edge" type="box" size="0.021213 0.021213 0.0299" material="table_border" pos="-0.02 -0.21 0" quat="0.924 0 0 0.383"/>
-    </body>
-    <body name="wall_top_left" pos="-0.285 0.305 0.03" quat="0.7071 0 0 -0.7071">
-      <geom name="wall_top_left_center_inside" type="box" size="0.01 0.24 0.03" material="table_wall"/>
-      <geom name="wall_top_left_top_edge" type="box" size="0.01414 0.01414 0.0299" material="table_wall" pos="-0.01 0.24 0" quat="0.924 0 0 0.383"/>
-      <geom name="wall_top_left_bottom_edge" type="box" size="0.01414 0.01414 0.0299" material="table_wall" pos="-0.01 -0.24 0" quat="0.924 0 0 0.383"/>
-      <geom name="wall_top_left_center_outside" type="box" size="0.02 0.26 0.03" material="table_wall" pos="-0.03 0 0"/>
-    </body>
-
-    <body name="corner_top_center" pos="0.0 0.335 0.03">
-      <geom name="corner_top_center" type="box" size="0.025 0.02 0.03" material="table_corner"/>
-    </body>
-
-    <body name="border_top_right" pos="0.285 0.275 0.03" quat="0.7071 0 0 -0.7071">
-      <geom name="border_top_right_center" type="box" size="0.015 0.21 0.03" material="table_border" pos="-0.005 0 0"/>
-      <geom name="border_top_right_top_edge" type="box" size="0.021213 0.021213 0.0299" material="table_border" pos="-0.02 0.21 0" quat="0.924 0 0 0.383"/>
-      <geom name="border_top_right_bottom_edge" type="box" size="0.021213 0.021213 0.0299" material="table_border" pos="-0.02 -0.21 0" quat="0.924 0 0 0.383"/>
-    </body>
-    <body name="wall_top_right" pos="0.285 0.305 0.03" quat="0.7071 0 0 -0.7071">
-      <geom name="wall_top_right_center_inside" type="box" size="0.01 0.24 0.03" material="table_wall"/>
-      <geom name="wall_top_right_top_edge" type="box" size="0.01414 0.01414 0.0299" material="table_wall" pos="-0.01 0.24 0" quat="0.924 0 0 0.383"/>
-      <geom name="wall_top_right_bottom_edge" type="box" size="0.01414 0.01414 0.0299" material="table_wall" pos="-0.01 -0.24 0" quat="0.924 0 0 0.383"/>
-      <geom name="wall_top_right_center_outside" type="box" size="0.02 0.26 0.03" material="table_wall" pos="-0.03 0 0"/>
-    </body>
-
-    <body name="corner_top_right" pos="0.595 0.335 0.03" quat="0.7071 0 0 -0.7071">
-      <geom name="corner_top_right_left" type="box" size="0.02 0.0475 0.03" material="table_corner" pos="0 -0.002375 0"/>
-      <geom name="corner_top_right_top" type="box" size="0.0275 0.02 0.03" material="table_corner" pos="0.0475 0.025 0"/>
-      <geom name="corner_top_right_edge" type="box" size="0.02 0.02 0.0299" material="table_corner" pos="0.02 0.005 0" quat="0.924 0 0 0.383"/>
-    </body>
-
-    <body name="border_right" pos="0.56 0.0 0.03" quat="0 0 0 1">
-      <geom name="border_right_center" type="box" size="0.015 0.21 0.03" material="table_border" pos="-0.005 0 0"/>
-      <geom name="border_right_top_edge" type="box" size="0.021213 0.021213 0.0299" material="table_border" pos="-0.02 0.21 0" quat="0.924 0 0 0.383"/>
-      <geom name="border_right_bottom_edge" type="box" size="0.021213 0.021213 0.0299" material="table_border" pos="-0.02 -0.21 0" quat="0.924 0 0 0.383"/>
-    </body>
-    <body name="wall_right" pos="0.59 0.0 0.03" quat="0 0 0 1">
-      <geom name="wall_right_center_inside" type="box" size="0.01 0.24 0.03" material="table_wall"/>
-      <geom name="wall_right_top_edge" type="box" size="0.01414 0.01414 0.0299" material="table_wall" pos="-0.01 0.24 0" quat="0.924 0 0 0.383"/>
-      <geom name="wall_right_bottom_edge" type="box" size="0.01414 0.01414 0.0299" material="table_wall" pos="-0.01 -0.24 0" quat="0.924 0 0 0.383"/>
-      <geom name="wall_right_center_outside" type="box" size="0.02 0.26 0.03" material="table_wall" pos="-0.03 0 0"/>
-    </body>
-
-    <body name="corner_bottom_right" pos="0.62 -0.31 0.03" quat="0 0 0 1">
-      <geom name="corner_bottom_right_left" type="box" size="0.02 0.0475 0.03" material="table_corner" pos="0 -0.002375 0"/>
-      <geom name="corner_bottom_right_top" type="box" size="0.0275 0.02 0.03" material="table_corner" pos="0.0475 0.025 0"/>
-      <geom name="corner_bottom_right_edge" type="box" size="0.02 0.02 0.0299" material="table_corner" pos="0.02 0.005 0" quat="0.924 0 0 0.383"/>
-    </body>
-
-    <body name="border_bottom_right" pos="0.285 -0.275 0.03" quat="0.7071 0 0 0.7071">
-      <geom name="border_bottom_right_center" type="box" size="0.015 0.21 0.03" material="table_border" pos="-0.005 0 0"/>
-      <geom name="border_bottom_right_top_edge" type="box" size="0.021213 0.021213 0.0299" material="table_border" pos="-0.02 0.21 0" quat="0.924 0 0 0.383"/>
-      <geom name="border_bottom_right_bottom_edge" type="box" size="0.021213 0.021213 0.0299" material="table_border" pos="-0.02 -0.21 0" quat="0.924 0 0 0.383"/>
-    </body>
-    <body name="wall_bottom_right" pos="0.285 -0.305 0.03" quat="0.7071 0 0 0.7071">
-      <geom name="wall_bottom_right_center_inside" type="box" size="0.01 0.24 0.03" material="table_wall"/>
-      <geom name="wall_bottom_right_top_edge" type="box" size="0.01414 0.01414 0.0299" material="table_wall" pos="-0.01 0.24 0" quat="0.924 0 0 0.383"/>
-      <geom name="wall_bottom_right_bottom_edge" type="box" size="0.01414 0.01414 0.0299" material="table_wall" pos="-0.01 -0.24 0" quat="0.924 0 0 0.383"/>
-      <geom name="wall_bottom_right_center_outside" type="box" size="0.02 0.26 0.03" material="table_wall" pos="-0.03 0 0"/>
-    </body>
-
-    <body name="corner_bottom_center" pos="0.0 -0.335 0.03">
-      <geom name="corner_bottom_center" type="box" size="0.025 0.02 0.03" material="table_corner"/>
-    </body>
-
-    <body name="border_bottom_left" pos="-0.285 -0.275 0.03" quat="0.7071 0 0 0.7071">
-      <geom name="border_bottom_left_center" type="box" size="0.015 0.21 0.03" material="table_border" pos="-0.005 0 0"/>
-      <geom name="border_bottom_left_top_edge" type="box" size="0.021213 0.021213 0.0299" material="table_border" pos="-0.02 0.21 0" quat="0.924 0 0 0.383"/>
-      <geom name="border_bottom_left_bottom_edge" type="box" size="0.021213 0.021213 0.0299" material="table_border" pos="-0.02 -0.21 0" quat="0.924 0 0 0.383"/>
-    </body>
-    <body name="wall_bottom_left" pos="-0.285 -0.305 0.03" quat="0.7071 0 0 0.7071">
-      <geom name="wall_bottom_left_center_inside" type="box" size="0.01 0.24 0.03" material="table_wall"/>
-      <geom name="wall_bottom_left_top_edge" type="box" size="0.01414 0.01414 0.0299" material="table_wall" pos="-0.01 0.24 0" quat="0.924 0 0 0.383"/>
-      <geom name="wall_bottom_left_bottom_edge" type="box" size="0.01414 0.01414 0.0299" material="table_wall" pos="-0.01 -0.24 0" quat="0.924 0 0 0.383"/>
-      <geom name="wall_bottom_left_center_outside" type="box" size="0.02 0.26 0.03" material="table_wall" pos="-0.03 0 0"/>
-    </body>
-
-    <body name="corner_bottom_left" pos="-0.595 -0.335 0.03" quat="0.7071 0 0 0.7071">
-      <geom name="corner_bottom_left_left" type="box" size="0.02 0.0475 0.03" material="table_corner" pos="0 -0.002375 0"/>
-      <geom name="corner_bottom_left_top" type="box" size="0.0275 0.02 0.03" material="table_corner" pos="0.0475 0.025 0"/>
-      <geom name="corner_bottom_left_edge" type="box" size="0.02 0.02 0.0299" material="table_corner" pos="0.02 0.005 0" quat="0.924 0 0 0.383"/>
+    <body name="wall_bottom" pos="0.0 -0.345 0.02">
+      <geom name="wall_bottom" type="box" size="0.62 0.01 0.02" material="table_surface"/>
     </body>
 </mujoco>

@@ -3,7 +3,7 @@
 	<include file="./common/cueball_shared.xml"/>
 
 	<worldbody>
-		<include file="./common/cueball_table.xml"/>
+		<include file="./common/cueball_pool_table.xml"/>
 		<body name="ball_0" pos="0 0 .035">
 		  <joint name="ball_0_root_x" type="slide"  pos="0 0 0" axis="1 0 0"/>
 		  <joint name="ball_0_root_y" type="slide"  pos="0 0 0" axis="0 1 0"/>

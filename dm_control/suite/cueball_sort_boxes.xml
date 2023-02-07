@@ -1,0 +1,32 @@
+
+<mujoco>
+	<include file="./common/cueball_shared.xml"/>
+
+	<worldbody>
+		<include file="./common/cueball_table.xml"/>
+
+		<geom name="yellow_target_zone" type="plane" pos="-0.47 0 0.001" size="0.15 0.355 .1" rgba="0.9 0.9 0.1 0.5"/>
+		<geom name="blue_target_zone" type="plane" pos="0.47 0 0.001" size="0.15 0.355 .1" rgba="0.1 0.1 0.9 0.5"/>
+
+		<body name="yellow_box_0" pos="0 0 .035">
+		  <joint name="yellow_box_0_root_x" type="slide"  pos="0 0 0" axis="1 0 0"/>
+		  <joint name="yellow_box_0_root_y" type="slide"  pos="0 0 0" axis="0 1 0"/>
+		  <geom name="yellow_box_0" type="box" size="0.0305 0.0305 0.0305" mass=".1" pos="-0.3 0.1 0" rgba="0.9 0.9 0.1 1.0" solref="-500 -10"/>
+		</body>
+		<body name="yellow_box_1" pos="0 0 .035">
+		  <joint name="yellow_box_1_root_x" type="slide"  pos="0 0 0" axis="1 0 0" range="-0.64 0.64"/>
+		  <joint name="yellow_box_1_root_y" type="slide"  pos="0 0 0" axis="0 1 0" range="-0.355 0.355"/>
+		  <geom name="yellow_box_1" type="box" size="0.0305 0.0305 0.0305" mass=".1" pos="-0.3 -0.1 0" rgba="0.9 0.9 0.1 1.0" solref="-500 -10"/>
+		</body>
+		<body name="blue_box_0" pos="0 0 .035">
+		  <joint name="blue_box_0_root_x" type="slide"  pos="0 0 0" axis="1 0 0" range="-0.64 0.64"/>
+		  <joint name="blue_box_0_root_y" type="slide"  pos="0 0 0" axis="0 1 0" range="-0.355 0.355"/>
+		  <geom name="blue_box_0" type="box" size="0.0305 0.0305 0.0305" mass=".1" pos="0.3 0.1 0" rgba="0.1 0.1 0.9 1.0" solref="-500 -10"/>
+		</body>
+		<body name="blue_box_1" pos="0 0 .035">
+		  <joint name="blue_box_1_root_x" type="slide"  pos="0 0 0" axis="1 0 0" range="-0.64 0.64"/>
+		  <joint name="blue_box_1_root_y" type="slide"  pos="0 0 0" axis="0 1 0" range="-0.355 0.355"/>
+		  <geom name="blue_box_1" type="box" size="0.0305 0.0305 0.0305" mass=".1" pos="0.3 -0.1 0" rgba="0.1 0.1 0.9 1.0" solref="-500 -10"/>
+		</body>
+	</worldbody>
+</mujoco>

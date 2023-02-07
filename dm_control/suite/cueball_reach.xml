@@ -3,7 +3,7 @@
 	<include file="./common/cueball_shared.xml"/>
 
 	<worldbody>
-		<include file="./common/cueball_table.xml"/>
+		<include file="./common/cueball_pool_table.xml"/>
 		<body name="target" pos="0 0.1 0.03" mocap="true">
 			<site type="box" rgba="1 0 0 0.5" size="0.03 0.03 0.03"/>
 		</body>

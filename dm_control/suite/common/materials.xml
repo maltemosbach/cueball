@@ -20,13 +20,12 @@ for example receiving a positive reward.
     <material name="target_highlight" rgba=".6 .3 .3 .4"/>
     <material name="site" rgba=".5 .5 .5 .3"/>
 
-    <texture name="cueball_table_grid" type="2d" builtin="checker" rgb1="0.1 1.0 0.1" rgb2="0.1 0.5 0.1" width="300" height="300" mark="none"/>
-    <material name="table_surface_grid" texture="cueball_table_grid" texrepeat="10 10" texuniform="true" reflectance=".2"/>
     <material name="cueball" rgba="0.9 0.9 0.9 1.0"/>
-    <material name="table_surface" rgba="0.482 0.725 0.447 1.0"/>
-    <material name="table_border" rgba="0.365 0.620 0.322 1.0"/>
-    <material name="table_wall" rgba="0.533 0.435 0.396 1.0"/>
-    <material name="table_corner" rgba="0.349 0.255 0.224 1.0"/>
-    <material name="table_pocket" rgba="0.290 0.208 0.184 1.0"/>
+    <material name="table_surface" rgba="0.5 0.5 0.5 1.0"/>
+    <material name="pool_table_surface" rgba="0.482 0.725 0.447 1.0"/>
+    <material name="pool_table_border" rgba="0.365 0.620 0.322 1.0"/>
+    <material name="pool_table_wall" rgba="0.533 0.435 0.396 1.0"/>
+    <material name="pool_table_corner" rgba="0.349 0.255 0.224 1.0"/>
+    <material name="pool_table_pocket" rgba="0.290 0.208 0.184 1.0"/>
   </asset>
 </mujoco>

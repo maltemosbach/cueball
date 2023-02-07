@@ -23,6 +23,8 @@ _FILENAMES = [
     "./common/materials.xml",
     "./common/skybox.xml",
     "./common/visual.xml",
+    "./common/cueball_cueball.xml",
+    "./common/cueball_pool_table.xml",
     "./common/cueball_shared.xml",
     "./common/cueball_table.xml",
     "./common/cueball_visual.xml"

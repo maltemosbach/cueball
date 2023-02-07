@@ -25,6 +25,7 @@ from dm_control.suite.utils import randomizers
 from dm_control.utils import containers
 from dm_control.utils import rewards
 import numpy as np
+from typing import *
 
 _DEFAULT_TIME_LIMIT = 20
 SUITE = containers.TaggedTasks()
@@ -42,10 +43,13 @@ def get_sink_pyramid_model():
     return common.read_model('cueball_sink_pyramid.xml'), common.ASSETS
 
 
+def get_sort_boxes_model():
+    return common.read_model('cueball_sort_boxes.xml'), common.ASSETS
+
+
 @SUITE.add()
 def reach(time_limit=_DEFAULT_TIME_LIMIT, random=None,
           environment_kwargs=None):
-    """Returns the easy point_mass task."""
     physics = Physics.from_xml_string(*get_reach_model())
     task = Cueball(random=random, task='reach')
     environment_kwargs = environment_kwargs or {}
@@ -56,7 +60,6 @@ def reach(time_limit=_DEFAULT_TIME_LIMIT, random=None,
 @SUITE.add()
 def sink_single(time_limit=_DEFAULT_TIME_LIMIT, random=None,
                 environment_kwargs=None):
-    """Returns the easy point_mass task."""
     physics = Physics.from_xml_string(*get_sink_single_model())
     task = Cueball(random=random, task='sink_single')
     environment_kwargs = environment_kwargs or {}
@@ -67,12 +70,29 @@ def sink_single(time_limit=_DEFAULT_TIME_LIMIT, random=None,
 @SUITE.add()
 def sink_pyramid(time_limit=_DEFAULT_TIME_LIMIT, random=None,
                  environment_kwargs=None):
-    """Returns the easy point_mass task."""
     physics = Physics.from_xml_string(*get_sink_pyramid_model())
     task = Cueball(random=random, task='sink_pyramid')
     environment_kwargs = environment_kwargs or {}
     return control.Environment(
         physics, task, time_limit=time_limit, **environment_kwargs)
+
+
+@SUITE.add()
+def sort_boxes(time_limit=_DEFAULT_TIME_LIMIT, random=None,
+                 environment_kwargs=None):
+    from dm_control.suite.cueball_sort_boxes import \
+        CueballSortBoxes, CueballSortBoxesPhysics
+    physics = CueballSortBoxesPhysics.from_xml_string(*get_sort_boxes_model())
+    task = CueballSortBoxes(random=random)
+    environment_kwargs = environment_kwargs or {}
+    return control.Environment(
+        physics, task, time_limit=time_limit, **environment_kwargs)
+
+
+class CueballPhysics(mujoco.Physics):
+    def cueball_pos(self) -> np.array:
+        return self.named.data.geom_xpos['cueball'][0:2]
+
 
 
 class Physics(mujoco.Physics):
