@@ -1,0 +1,11 @@
+<mujoco model="cueball-cueball">
+    <light name="light" pos="0 0 4"/>
+    <camera name="birdseye" pos="0 0 0.9" quat="1 0 0 0"/>
+
+    <body name="cueball" pos="0 0 .035">
+      <camera name="firstperson" pos="0 -0.4 0.4" xyaxes="1 0 0 0 0.7 0.7"/>
+      <joint name="root_x" type="slide"  pos="0 0 0" axis="1 0 0" range="-0.64 0.64"/>
+      <joint name="root_y" type="slide"  pos="0 0 0" axis="0 1 0" range="-0.355 0.355"/>
+      <geom name="cueball" type="sphere" size=".0305" mass=".1" material="cueball" solref="-500 -10"/>
+    </body>
+</mujoco>
