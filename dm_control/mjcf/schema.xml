@@ -37,7 +37,7 @@
             <attribute name="timeconst" type="float"/>
             <attribute name="timestep" type="float"/>
             <attribute name="inttotal" type="float"/>
-            <attribute name="inteval" type="float"/>
+            <attribute name="interval" type="float"/>
             <attribute name="tolrange" type="float"/>
           </attributes>
         </element>
@@ -56,7 +56,7 @@
         <attribute name="o_margin" type="float"/>
         <attribute name="o_solref" type="array" array_type="float" array_size="2"/>
         <attribute name="o_solimp" type="array" array_type="float" array_size="5"/>
-        <attribute name="integrator" type="keyword" valid_values="Euler RK4 implicit"/>
+        <attribute name="integrator" type="keyword" valid_values="Euler RK4 implicit implicitfast"/>
         <attribute name="collision" type="keyword" valid_values="all predefined dynamic"/>
         <attribute name="cone" type="keyword" valid_values="pyramidal elliptic"/>
         <attribute name="jacobian" type="keyword" valid_values="dense sparse auto"/>
@@ -95,6 +95,7 @@
     </element>
     <element name="size">
       <attributes>
+        <attribute name="memory" type="string" conflict_allowed="true" conflict_behavior="max_bytes"/>
         <attribute name="njmax" type="int" conflict_allowed="true" conflict_behavior="max"/>
         <attribute name="nconmax" type="int" conflict_allowed="true" conflict_behavior="max"/>
         <attribute name="nstack" type="int"/>
@@ -122,6 +123,7 @@
             <attribute name="glow" type="float"/>
             <attribute name="offwidth" type="int"/>
             <attribute name="offheight" type="int"/>
+            <attribute name="ellipsoidinertia" type="keyword" valid_values="false true"/>
           </attributes>
         </element>
         <element name="quality">
@@ -349,6 +351,7 @@
             <attribute name="condim" type="int"/>
             <attribute name="friction" type="array" array_type="float" array_size="5"/>
             <attribute name="solref" type="array" array_type="float" array_size="2"/>
+            <attribute name="solreffriction" type="array" array_type="float" array_size="2"/>
             <attribute name="solimp" type="array" array_type="float" array_size="5"/>
             <attribute name="margin" type="float"/>
             <attribute name="gap" type="float"/>
@@ -391,9 +394,9 @@
             <attribute name="gear" type="array" array_type="float" array_size="6"/>
             <attribute name="cranklength" type="float"/>
             <attribute name="user" type="array" array_type="float"/>
-            <attribute name="dyntype" type="keyword" valid_values="none integrator filter user"/>
-            <attribute name="gaintype" type="keyword" valid_values="fixed affine user"/>
-            <attribute name="biastype" type="keyword" valid_values="none affine user"/>
+            <attribute name="dyntype" type="keyword" valid_values="none integrator filter muscle user"/>
+            <attribute name="gaintype" type="keyword" valid_values="fixed affine muscle user"/>
+            <attribute name="biastype" type="keyword" valid_values="none affine muscle user"/>
             <attribute name="dynprm" type="array" array_type="float" array_size="10"/>
             <attribute name="gainprm" type="array" array_type="float" array_size="10"/>
             <attribute name="biasprm" type="array" array_type="float" array_size="10"/>
@@ -687,9 +690,9 @@
                 <attribute name="cranklength" type="float"/>
                 <attribute name="user" type="array" array_type="float"/>
                 <attribute name="actdim" type="int"/>
-                <attribute name="dyntype" type="keyword" valid_values="none integrator filter user"/>
-                <attribute name="gaintype" type="keyword" valid_values="fixed affine user"/>
-                <attribute name="biastype" type="keyword" valid_values="none affine user"/>
+                <attribute name="dyntype" type="keyword" valid_values="none integrator filter muscle user"/>
+                <attribute name="gaintype" type="keyword" valid_values="fixed affine muscle user"/>
+                <attribute name="biastype" type="keyword" valid_values="none affine muscle user"/>
                 <attribute name="dynprm" type="array" array_type="float" array_size="10"/>
                 <attribute name="gainprm" type="array" array_type="float" array_size="10"/>
                 <attribute name="biasprm" type="array" array_type="float" array_size="10"/>
@@ -788,7 +791,7 @@
     </element>
     <element name="extension">
       <children>
-        <element name="required" repeated="true" namespace="plugin">
+        <element name="plugin" repeated="true" namespace="plugin">
           <attributes>
             <attribute name="plugin" type="string" required="true"/>
           </attributes>
@@ -902,6 +905,7 @@
             <attribute name="inflate" type="float"/>
             <attribute name="material" type="reference"/>
             <attribute name="rgba" type="array" array_type="float" array_size="4"/>
+            <attribute name="group" type="int"/>
           </attributes>
           <children>
             <element name="bone" repeated="true">
@@ -1037,6 +1041,21 @@
             <attribute name="solimpsmooth" type="array" array_type="float" array_size="5"/>
           </attributes>
           <children>
+            <element name="plugin" repeated="true" namespace="composite">
+              <attributes>
+                <attribute name="name" type="identifier"/>
+                <attribute name="plugin" type="string" reference_namespace="plugin"/>
+                <attribute name="instance" type="reference" reference_namespace="plugin"/>
+              </attributes>
+              <children>
+                <element name="config" repeated="true">
+                  <attributes>
+                    <attribute name="key" type="string"/>
+                    <attribute name="value" type="string"/>
+                  </attributes>
+                </element>
+              </children>
+            </element>
             <element name="joint" repeated="true">
               <attributes>
                 <attribute name="kind" type="keyword" valid_values="main twist stretch" required="true"/>
@@ -1139,6 +1158,21 @@
             <attribute name="gravcomp" type="float"/>
           </attributes>
           <children>
+            <element name="plugin" repeated="true" namespace="body">
+              <attributes>
+                <attribute name="name" type="identifier"/>
+                <attribute name="plugin" type="string" reference_namespace="plugin"/>
+                <attribute name="instance" type="reference" reference_namespace="plugin"/>
+              </attributes>
+              <children>
+                <element name="config" repeated="true">
+                  <attributes>
+                    <attribute name="key" type="string"/>
+                    <attribute name="value" type="string"/>
+                  </attributes>
+                </element>
+              </children>
+            </element>
             <element name="inertial" on_demand="true">
               <attributes>
                 <attribute name="pos" type="array" required="true" array_type="float" array_size="3"/>
@@ -1390,6 +1424,7 @@
             <attribute name="condim" type="int"/>
             <attribute name="friction" type="array" array_type="float" array_size="5"/>
             <attribute name="solref" type="array" array_type="float" array_size="2"/>
+            <attribute name="solreffriction" type="array" array_type="float" array_size="2"/>
             <attribute name="solimp" type="array" array_type="float" array_size="5"/>
             <attribute name="margin" type="float"/>
             <attribute name="gap" type="float"/>
@@ -2137,17 +2172,17 @@
             <attribute name="noise" type="float"/>
             <attribute name="cutoff" type="float"/>
             <attribute name="user" type="array" array_type="float"/>
-            <attribute name="objtype" type="keyword" required="true" valid_values="body joint geom site camera light mesh skin hfield texture material equality tendon actuator sensor numeric text tuple contact keyframe"/>
-            <attribute name="objname" type="reference" required="true" reference_namespace="attrib:objtype"/>
-            <attribute name="datatype" type="keyword" required="true" valid_values="real positive axis quaternion"/>
-            <attribute name="needstage" type="keyword" required="true" valid_values="pos vel acc"/>
+            <attribute name="objtype" type="keyword" valid_values="body joint geom site camera light mesh skin hfield texture material equality tendon actuator sensor numeric text tuple contact keyframe"/>
+            <attribute name="objname" type="reference" reference_namespace="attrib:objtype"/>
+            <attribute name="datatype" type="keyword" valid_values="real positive axis quaternion"/>
+            <attribute name="needstage" type="keyword" valid_values="pos vel acc"/>
             <attribute name="dim" type="int" required="true"/>
           </attributes>
         </element>
         <element name="plugin" repeated="true" namespace="sensor">
           <attributes>
             <attribute name="name" type="identifier"/>
-            <attribute name="plugin" type="reference" reference_namespace="plugin"/>
+            <attribute name="plugin" type="string" reference_namespace="plugin"/>
             <attribute name="instance" type="reference" reference_namespace="plugin"/>
             <attribute name="cutoff" type="float"/>
             <attribute name="objtype" type="keyword" valid_values="body joint geom site camera light mesh skin hfield texture material equality tendon actuator sensor numeric text tuple contact keyframe"/>
